@@ -3,8 +3,11 @@ import { useGetPlcsQuery } from "features/plc/plcApi";
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState, } from "react";
 import { Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
 import { FaLayerGroup, FaPen, FaPlusCircle, FaTrashAlt } from "react-icons/fa";
+import {FcElectronics}  from "react-icons/fc";
 import { Link } from "react-router-dom";
 import CreatePlc from "./CreatePlc";
+import DeletePLCModel from "./DeletePLCModel";
+import EditPlc from "./EditPlc";
 
 
 const PlcContext = createContext({
@@ -13,6 +16,8 @@ const PlcContext = createContext({
 
 function usePlcsSource() {
     const { data, isLoading, isSuccess } = useGetPlcsQuery()
+
+
     const [{ plcs, search }, dispatch] = useReducer((state, action) => {
         switch (action.type) {
             case 'setPlcs':
@@ -74,6 +79,8 @@ const SearchBox = () => {
     )
 }
 
+
+
 const PlcCard = ({ plc }) => {
     const {
         config: { isHide },
@@ -82,24 +89,26 @@ const PlcCard = ({ plc }) => {
 
     return (
         <>
-            <Col xs={6} md={4} key={plc.id}>
+            <Col xs={12} sm={6} md={4}  xxl={3} key={plc.id}>
                 <Card>
                     <Card.Body>
                         <div className="d-flex flex-column justify-content-between ">
-                            <Link to={`/plcs/${plc.id}/`} className="  ">
-                                <div className="d-flex justify-content-between ">
-                                    <div className="me-2 p-2">
-                                        <FaLayerGroup size={50} color={'orange'} />
+                            <Link to={`/plcs/${plc.id}/`} className="   ">
+                                <div className="d-flex  ">
+                                    <div className="me-2  rounded-circle">
+                                        <FcElectronics  size={60} color={'orange'} />
                                     </div>
                                     <div>
-                                        <h5>{plc.ip_v4}</h5>
+                                        <h5>IP : {plc.ip_v4}</h5>
+                                        <h6>Rack : {plc.rack}</h6>
+                                        <h6>Slot : {plc.slot}</h6>
 
                                     </div>
                                 </div>
                             </Link>
-                            <div className="d-flex flex-row justify-content-end mt-3 ">
-                                <Button size="sm" className="me-2 " variant="info"> <FaPen/> </Button>
-                                <Button size="sm" variant="danger"> <FaTrashAlt/> </Button>
+                            <div className="d-flex flex-row justify-content-end mt-3  ">
+                                <EditPlc plc={plc}/>
+                                <DeletePLCModel plc_id={plc.id}/>
                             </div>
                         </div>
                     </Card.Body>

@@ -4,13 +4,13 @@ from plc.models import PLC, Tag, Input, InputTag
 
 
 class PLCAdmin(admin.ModelAdmin):
-    list_display = ['id', 'ip_v4', 'rack','slot','created_at']
+    list_display = ['id', 'ip_v4', 'rack','slot']
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['id', 'plc', 'name','data_type','ad_start','address_bit']
+    list_display = ['id', 'plc', 'name','data_type','address_start_byte','address_start_bit']
 
 class InputAdmin(admin.ModelAdmin):
-    list_display = ['id', 'block_data', 'time']
+    list_display = ['id', 'data_input', 'time']
 
 class InputTagAdmin(admin.ModelAdmin):
     list_display = ['id', 'input', 'tag','value_tag']

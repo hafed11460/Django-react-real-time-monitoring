@@ -34,30 +34,30 @@ const dashRoutes = [
         ]
     },
     {
-        label: 'Devices',
-        to: '/devices',
+        label: 'Users',
+        to: '/users',
         labelDisable: false,
         icon:'bi bi-stack',
         children: [
             {
-                name: 'Desktop',
-                to: '/devices/desktop/',
+                name: 'Admin',
+                to: '/devices/admin/',
                 icon:'bi bi-pc-display-horizontal',
                 exact: true,
                 active: true
             },
             {
-                name: 'Printer',
+                name: 'Views',
                 icon:'bi bi-printer',
-                to: '/devices/printer',
+                to: '/users/views',
                 exact: true,
                 active: true
             },
         ]
     },
     {
-        label: 'Tools',
-        to: '/tools',
+        label: 'Settings',
+        to: '/settings',
         labelDisable: false,
         icon:'bi bi-tools',
         children: [

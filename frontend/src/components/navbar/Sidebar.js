@@ -36,7 +36,6 @@ export const SidebarItem = ({ route, label, icon, items }) => {
                             <Link to={item.to}>
                                 <i className={item.icon}></i>
                                 <span> {item.name} </span>
-
                             </Link>
                         </Nav.Item>
                     ))
@@ -61,7 +60,9 @@ const Sidebar = ({ label }) => {
                 <div className="sidebar-header position-relative">
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="logo">
-                            <a href="index.html">NET-AUTO</a>
+                        <Link to={`/`} className="   ">
+                           PLC
+                        </Link>
                         </div>
 
                         <div className="sidebar-toggler  x" onClick={() => setConfig('isSidebar', !isSidebar)}>

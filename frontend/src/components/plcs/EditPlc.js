@@ -1,51 +1,37 @@
-import { useAddPlcMutation, useGetPlcQuery, useGetPlcsQuery } from 'features/plc/plcApi';
+import { useAddPlcMutation, useUpdatePlcMutation } from 'features/plc/plcApi';
 import React, { useEffect, useState } from 'react'
 import {
+    Container,
     Form,
     Button,
-    Modal
+    Row,
+    Col,
+    Modal,
+    InputGroup,
+    FormControl
+    // InputGroup,
+    // FormControl
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { FaPlusCircle } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import { FaPen, FaPlusCircle } from 'react-icons/fa';
+import { toast } from 'react-toastify'
 
-const ErrorText = ({ name, error }) => {
-
-    const [content, setContent] = useState(null)
-    useEffect(() => {
-        try {
-
-            if (error) {
-                if (name in error.data) {
-                    setContent(
-                        <Form.Text className="text-danger">
-                            {error.data[name]}
-                        </Form.Text>
-                    )
-                }
-            }
-
-        } catch (error) {
-
-        }
-    },[error])
-    return content
-}
-
-const CreatePlc = () => {
-    const [addPlc, { data, isLoading, isSuccess, isError, error }] = useAddPlcMutation()
+const EditPlc = ({plc}) => {
+    const [updatePlc, { data, isLoading, isSuccess, isError }] = useUpdatePlcMutation()
     const [show, setShow] = useState(false);
     const initState = {
-        ip_v4: "192.168.1.",
-        rack: "10",
-        slot: "30",
+        id:plc.id,
+        ip_v4: plc.ip_v4,
+        rack: plc.rack,
+        slot: plc.slot,
     };
 
     // eslint-disable-next-line no-unused-vars
     const [initialValues, setInitialValues] = React.useState(initState);
 
-    const onSubmit = async (values) => {
-        await addPlc(values).unwrap()
+    const onSubmit = (values) => {
+        updatePlc(values)
+        toast.success(`PLC Updated Successfully`, {})
     };
 
     const onError = (error) => {
@@ -54,18 +40,9 @@ const CreatePlc = () => {
 
     useEffect(() => {
         if (isSuccess) {
-
-            setInitialValues(initState)
             setShow(false)
-            toast.success('PLC add Successfully')
         }
-    }, [isSuccess])
-    useEffect(() => {
-        if (isError) {
-
-            console.log(error.data)
-        }
-    }, [isError])
+    }, [isSuccess, data])
 
     const {
         register,
@@ -77,8 +54,7 @@ const CreatePlc = () => {
         mode: "onTouched",
         reValidateMode: "onSubmit",
         // reValidateMode: "onChange",
-        defaultValues: initialValues,
-        errors: error
+        defaultValues: initialValues
     });
 
     // const x = JSON.stringify(data);
@@ -95,9 +71,10 @@ const CreatePlc = () => {
 
     return (
         <div>
-            <Button onClick={() => setShow(!show)}>
-                <FaPlusCircle />
+            <Button onClick={() => setShow(!show)} size="sm" className="me-2 " variant="info">
+                <FaPen /> Edit
             </Button>
+
             <Modal
                 show={show}
                 size="md"
@@ -106,20 +83,18 @@ const CreatePlc = () => {
                 aria-labelledby="contained-modal-title-vcenter">
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        Create PLC
+                        Edit PLC
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit(onSubmit, onError)}>
-
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>IP Address</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="10.10.10.10"
-                                {...register("ip_v4", { required: "This Feild Is required" })}
+                                {...register("ip_v4", { required: "Correo es obligatorio" })}
                             />
-                            <ErrorText name='ip_v4' error={error} />
                             {errors.ip_v4 && (
                                 <Form.Text className="text-danger">
                                     {errors.ip_v4.message}
@@ -132,7 +107,7 @@ const CreatePlc = () => {
                             <Form.Control
                                 type="number"
                                 placeholder="rack"
-                                {...register("rack", { required: "This Feild Is required" })}
+                                {...register("rack", { required: "Contraseña es obligatoria" })}
                             />
                             {errors.rack && (
                                 <Form.Text className="text-danger">
@@ -146,7 +121,7 @@ const CreatePlc = () => {
                             <Form.Control
                                 type="number"
                                 placeholder="Slot"
-                                {...register("slot", { required: "This Feild Is required" })}
+                                {...register("slot", { required: "Confirmar contraseña es obligatorio" })}
                             />
                             {errors.slot && (
                                 <Form.Text className="text-danger">
@@ -155,7 +130,7 @@ const CreatePlc = () => {
                             )}
                         </Form.Group>
                         <Button variant="primary" type="submit">
-                            Submit
+                            Save
                         </Button>
                     </Form>
                 </Modal.Body>
@@ -164,4 +139,4 @@ const CreatePlc = () => {
     );
 }
 
-export default CreatePlc
+export default EditPlc

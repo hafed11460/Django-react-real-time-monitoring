@@ -8,7 +8,6 @@ import SwitchHistory from "components/switches/SwitchHistory";
 import { PrivateRoute } from "./PrivateRoute";
 import { GuestRoute } from "./GuestRoute";
 import SwitchsPorts from "components/switches/SwitchPorts";
-import Backup from "components/tools/Backup";
 import PlcApp from "components/plcs/PlcApp";
 import PlcDetail from "components/plcs/PlcDetail";
 
@@ -27,7 +26,6 @@ const Layout = () => {
             <Route path="/plcs/:pid/" element={<PlcDetail />} />
             <Route path="/switchs/:sid/detail/" element={<SwitchHistory />} />
             <Route path="/switchs/:sid/ports/" element={<SwitchsPorts />} />
-            <Route path="/tools/backup/" element={<Backup />} />
           {/* </Route> */}
         </Route>
         <Route element={<GuestRoute />}>

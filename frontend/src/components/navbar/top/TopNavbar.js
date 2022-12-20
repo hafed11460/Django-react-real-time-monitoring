@@ -10,7 +10,7 @@ const TopNavbar = () => {
         setConfig
     } = useContext(AppContext)
     return (
-        <header className='mb-2 border-bottom '>
+        <header className=' border-bottom '>
             <Navbar className="ps-0 " style={{height:'60px'}}>
                 <Container fluid className="" >
                     <Nav onClick={()=>setConfig('isSidebar',!isSidebar)}>

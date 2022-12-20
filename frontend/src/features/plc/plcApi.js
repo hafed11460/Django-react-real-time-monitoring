@@ -1,50 +1,51 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-// import axiosInstance, { setAxiosAuthToken } from "../../Utils/axios";
-import { axiosBaseQuery } from "../axiosBaseQuery";
-
-
-const plc_root = '/plcs'
+// Or from '@reduxjs/toolkit/query' if not using the auto-generated hooks
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { BASE_URL } from 'features/baseUrl'
 
 export const plcApi = createApi({
-    reducerPath: 'plcApi',
-    baseQuery: axiosBaseQuery(),
-    tagTypes: ['Plc'],
-    endpoints: (builder) => ({
-        getPlcs: builder.query({
-            query: () => {
-                return {
-                    url: `${plc_root}/`,
-                    method: "get",
-                    data: {},
-                };
-            },
-            providesTags: (result) =>
-                // is result available?
-                result
-                    ? // successful query
-                    [
-                        ...result.map(({ id }) => ({ type: 'Plcs', id })),
-                        { type: 'Plcs', id: 'LIST' },
-                    ]
-                    : // an error occurred, but we still want to refetch this query when `{ type: 'Posts', id: 'LIST' }` is invalidated
-                    [{ type: 'Plcs', id: 'LIST' }],
-        }),
-
-        addPlc: builder.mutation({
-            query: (body) => {
-                return {
-                    url: `${plc_root}/`,
-                    method: 'POST',
-                    data: body,
-                };
-            },
-            invalidatesTags: ["Plcs"]
-            // invalidatesTags: [{ type: 'Plcs', id: 'LIST' }],
-        })
-    })
+  reducerPath: 'plcApi',
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  tagTypes: ['Plcs'],
+  endpoints: (builder) => ({
+    getPlcs: builder.query({
+      query: () => 'plcs/',
+      providesTags: (result) =>
+      result ? result.map(({ id }) => ({ type: 'Plcs', id })) : ['Plcs'],
+    }),
+    getPlc: builder.query({
+      query: (id) => `plcs/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Plcs', id }],
+    }),
+    addPlc: builder.mutation({
+      query: (body) => ({
+        url: `plcs/`,
+        method: 'POST',
+        body: body
+      }),
+      invalidatesTags: ['Plcs']
+    }),
+    updatePlc: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `plcs/${id}/`,
+          method: 'PUT',
+          body: body
+      }),
+      invalidatesTags: ['Plcs']
+    }),
+    deletePlc: builder.mutation({
+      query: ({ id}) => ({
+        url: `plcs/${id}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Plcs']
+    }),
+  }),
 })
 
 export const {
-    useGetPlcsQuery,
-    useAddPlcMutation,
+  useGetPlcsQuery,
+  useAddPlcMutation,
+  useGetPlcQuery,
+  useUpdatePlcMutation,
+  useDeletePlcMutation,
 } = plcApi
