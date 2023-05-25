@@ -1,8 +1,6 @@
-import SwitchHorCard from 'components/switches/SwitchHorCard';
 import { Card, Col, Row } from 'react-bootstrap';
-import { useSwitchsEnvironmentsListQuery } from '../../features/switchs/switchAPI';
 const Dashboard = () => {
-    const { data, isLoading, isError, isSuccess } = useSwitchsEnvironmentsListQuery('')
+    const data = []
     return (
         <div className="page-content">
             <Row className="row">
@@ -11,7 +9,7 @@ const Dashboard = () => {
                         {
                             data && data.map((sw) => (
                                 <Col key={sw.id}>
-                                    <SwitchHorCard sw={sw} key={sw.id} />
+                                    <h5>Plc Component</h5>
                                 </Col>
                             ))
                         }

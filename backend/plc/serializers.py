@@ -8,6 +8,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ControllerSerializer(serializers.ModelSerializer):
+    # tags = serializers.SlugRelatedField('name',)
     tags = TagSerializer(many=True, read_only=True)
     class Meta:
         model=PLC
